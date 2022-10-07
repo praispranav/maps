@@ -32,6 +32,7 @@ const INITIAL_CURRENT_LOCATION = {
 };
 
 export default function MapScreen() {
+  const [allMarkerLocations, setAllMarkerLocations] = useState([]);
   const [markerLocations, setMarkerLocations] = useState([]);
   const [mapConfig, setMapConfig] = useState(INITIAL_MAP_CONFIG);
   const [currentLocation, setCurrentLocation] = useState(
@@ -92,6 +93,7 @@ export default function MapScreen() {
       return locationDetail;
     });
     setMarkerLocations(labelWithLocation);
+    setAllMarkerLocations(labelWithLocation);
     setLocationPermission(true);
   };
 
@@ -111,7 +113,13 @@ export default function MapScreen() {
         selectedLocation={selectedLocation}
       />
       <View style={styles.header}>
-        <Header searchText={searchText} setSearchText={setSearchText} />
+        <Header
+          allMarkerLocations={allMarkerLocations}
+          searchText={searchText}
+          setSearchText={setSearchText}
+          onSelectLocation={onSelectLocation}
+          setMarkerLocations={setMarkerLocations}
+        />
       </View>
       <ThemedView
         backgroundType="bottomNavigationBackground"
@@ -170,7 +178,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     zIndex: 1,
-    width: "100%"
+    width: "100%",
   },
   locationDetailCard: {
     width: "100%",

@@ -1,47 +1,83 @@
-import React, { useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,Image,
-  TouchableOpacity,
-  ScrollView,
   Dimensions,
   FlatList,
+  Image,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { AntDesign } from "react-native-vector-icons";
 import { useSelector } from "react-redux";
-import ThemedView from "./themed/View";
 import ThemedText from "./themed/Text";
 import ThemedTouchableOpacity from "./themed/TouchableOpacity";
-import mapLabels from "../data/sampleLocations";
-import themeColors from "../config/Theme";
+import ThemedView from "./themed/View";
 
 const GREY_COLOR = "rgba(180,180,180, 1)";
 
 function SearchItem(props) {
+  const handleClick = () => {
+    props.setSearchText(props.title);
+    const result = props.filterLocations(props.title);
+    props.setMarkerLocations(result);
+    props.onSelectLocation(props)
+    props.onBlur();
+  };
   return (
-    <ThemedTouchableOpacity  style={styles.searchItem}>
-      <Image source={props.imageSmall } style={styles.searchItemIcon} />
+    <ThemedTouchableOpacity activeOpacity={0.9} style={styles.searchItem} onPress={handleClick}>
+      <Image source={props.imageSmall} style={styles.searchItemIcon} />
       <ThemedText>{props.title}</ThemedText>
     </ThemedTouchableOpacity>
   );
 }
 
-const Header = React.forwardRef((props, inputRef) => {
+const Header = (props) => {
   const theme = useSelector((s) => s.theme);
-  const [searchResult, setSearchResult] = useState(mapLabels.slice(0, 4));
+  const inputRef = useRef(null);
+  const [searchResult, setSearchResult] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
   const onFocus = () => setIsFocused(true);
   const onBlur = () => setIsFocused(false);
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    props.setMarkerLocations(searchResult);
+  };
 
-  const clearSearchText = () => props.setSearchText("");
+  const clearSearchText = () => {
+    props.setSearchText("");
+    if (inputRef) inputRef.current.blur();
+  };
+
+  const filterLocations = (searchText) => {
+    const result = props.allMarkerLocations.filter((location) =>
+      location.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    setSearchResult(result);
+    return result;
+  };
+
+  useEffect(() => {
+    filterLocations(props.searchText);
+  }, [props.searchText]);
+
+  useEffect(() => {
+    setSearchResult(props.allMarkerLocations.slice(0, 4));
+  }, [props.allMarkerLocations]);
 
   const renderItem = ({ item }) => {
-    return <SearchItem {...item} />;
+    return (
+      <SearchItem
+        {...item}
+        setSearchText={props.setSearchText}
+        onBlur={onBlur}
+        filterLocations={filterLocations}
+        onSelectLocation={props.onSelectLocation}
+        setMarkerLocations={props.setMarkerLocations}
+      />
+    );
   };
   return (
     <View style={styles.mainContainer}>
@@ -64,10 +100,11 @@ const Header = React.forwardRef((props, inputRef) => {
           onChangeText={props.setSearchText}
           placeholder="Search"
           onFocus={onFocus}
-          onBlur={onBlur}
           placeholderTextColor={GREY_COLOR}
           keyboardType="web-search"
           ref={inputRef}
+          blurOnSubmit={true}
+          onSubmitEditing={onSubmit}
         />
         <TouchableOpacity
           style={styles.iconContainer}
@@ -85,15 +122,13 @@ const Header = React.forwardRef((props, inputRef) => {
       ) : undefined}
     </View>
   );
-});
+};
 
 const CONTAINER_WIDTH = Dimensions.get("screen").width - 40;
 
 const styles = StyleSheet.create({
   mainContainer: {
     width: CONTAINER_WIDTH,
-    // backgroundColor: "red",
-    // overflow: "hidden",
     elevation: 3,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -123,17 +158,18 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
   },
-  searchItem:{
+  searchItem: {
     paddingHorizontal: 15,
     paddingVertical: 9,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
-  searchItemIcon:{
+  searchItemIcon: {
     width: 20,
-    height: 20, marginRight: 15
-  }
+    height: 20,
+    marginRight: 15,
+  },
 });
 
 export default Header;
