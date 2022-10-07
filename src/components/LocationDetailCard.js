@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import ThemedView from "./themed/View";
-import ThemedText from "../components/themed/Text";
+import ThemedText from "./themed/Text";
+import ThemedTouchableOpacity from "./themed/TouchableOpacity";
+import { AntDesign } from "react-native-vector-icons"
+import { useSelector } from "react-redux";
 
 export default function LocationDetailCard(props) {
+  const theme = useSelector(s=> s.theme)
   return (
     <ThemedView style={styles.card}>
       <Image source={{ uri: props.locationImage }} style={styles.image} />
@@ -11,6 +15,9 @@ export default function LocationDetailCard(props) {
         <ThemedText style={styles.heading} numberOfLines={1}>{props.title}</ThemedText>
         <ThemedText style={styles.description} numberOfLines={2}>{props.description}</ThemedText>
       </View>
+      <ThemedTouchableOpacity onPress={props.clearSelectedLocation} style={styles.closeButton}>
+        <AntDesign name="close" size={20} color={theme.light ? 'black' : 'white'} />
+      </ThemedTouchableOpacity>
     </ThemedView>
   );
 }
@@ -27,6 +34,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    position: "relative"
   },
   container: {
     width: "100%",
@@ -50,5 +58,10 @@ const styles = StyleSheet.create({
   textContainer:{
     marginLeft: 10,
     width: "78%"
+  },
+  closeButton:{
+    position: 'absolute',
+    top: 15,
+    right: 15
   }
 });

@@ -2,12 +2,16 @@ const themeColors = {
     light:{
         backgroundColor: 'white',
         color: "black",
-        bottomNavigationBackground: 'white'
+        bottomNavigationBackground: 'white',
+        mapMarker: "white",
+        mapMarkerBorder: "black"
     },
     dark:{
         backgroundColor: '#5c5858',
         color: 'white',
-        bottomNavigationBackground: 'black'
+        bottomNavigationBackground: 'black',
+        mapMarker: "#5c5858",
+        mapMarkerBorder: "white",
     }
 }
 

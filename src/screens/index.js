@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Map from "../components/Map";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { Entypo } from "react-native-vector-icons";
 import IconButton from "../components/IconButton";
 import { useDispatch } from "react-redux";
 import { changeTheme } from "../store/themeSlice";
@@ -12,14 +11,14 @@ import LocationDetailCard from "../components/LocationDetailCard";
 import * as Location from "expo-location";
 import mapLabels from "../data/sampleLocations";
 
-const INTIAL_MAP_CONFIG = {
+const INITIAL_MAP_CONFIG = {
   latitude: 26.567392240889685,
   longitude: 85.51322898273469,
   latitudeDelta: 0.0202,
   longitudeDelta: 0.0111,
 };
 
-const INTIAL_CURRENT_LOCATION = {
+const INITIAL_CURRENT_LOCATION = {
   coords: {
     accuracy: 0,
     altitude: 0,
@@ -34,12 +33,14 @@ const INTIAL_CURRENT_LOCATION = {
 
 export default function MapScreen() {
   const [markerLocations, setMarkerLocations] = useState([]);
-  const [mapConfig, setMapConfig] = useState(INTIAL_MAP_CONFIG);
+  const [mapConfig, setMapConfig] = useState(INITIAL_MAP_CONFIG);
   const [currentLocation, setCurrentLocation] = useState(
-    INTIAL_CURRENT_LOCATION
+    INITIAL_CURRENT_LOCATION
   );
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [locationPermission, setLocationPermission] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
   const dispatch = useDispatch();
 
   const handleSearch = () => {};
@@ -110,7 +111,7 @@ export default function MapScreen() {
         selectedLocation={selectedLocation}
       />
       <View style={styles.header}>
-        <Header handleSearch={handleSearch} />
+        <Header searchText={searchText} setSearchText={setSearchText} />
       </View>
       <ThemedView
         backgroundType="bottomNavigationBackground"
@@ -125,6 +126,7 @@ export default function MapScreen() {
             locationImage={selectedLocation.locationImage}
             title={selectedLocation.title}
             description={selectedLocation.description}
+            clearSelectedLocation={clearSelectedLocation}
           />
         </View>
       ) : undefined}
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     zIndex: 1,
-    width: "100%",
+    width: "100%"
   },
   locationDetailCard: {
     width: "100%",
