@@ -119,6 +119,7 @@ export default function MapScreen() {
           setSearchText={setSearchText}
           onSelectLocation={onSelectLocation}
           setMarkerLocations={setMarkerLocations}
+          setSelectedLocation={setSelectedLocation}
         />
       </View>
       <ThemedView

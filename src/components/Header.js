@@ -17,15 +17,12 @@ import ThemedView from "./themed/View";
 const GREY_COLOR = "rgba(180,180,180, 1)";
 
 function SearchItem(props) {
-  const handleClick = () => {
-    props.setSearchText(props.title);
-    const result = props.filterLocations(props.title);
-    props.setMarkerLocations(result);
-    props.onSelectLocation(props)
-    props.onBlur();
-  };
   return (
-    <ThemedTouchableOpacity activeOpacity={0.9} style={styles.searchItem} onPress={handleClick}>
+    <ThemedTouchableOpacity
+      activeOpacity={0.9}
+      style={styles.searchItem}
+      onPress={()=> props.handleItemClick(props)}
+    >
       <Image source={props.imageSmall} style={styles.searchItemIcon} />
       <ThemedText>{props.title}</ThemedText>
     </ThemedTouchableOpacity>
@@ -43,11 +40,15 @@ const Header = (props) => {
 
   const onSubmit = () => {
     props.setMarkerLocations(searchResult);
+    setIsFocused(false);
   };
 
   const clearSearchText = () => {
     props.setSearchText("");
     if (inputRef) inputRef.current.blur();
+    props.setSelectedLocation(null)
+    const result = filterLocations("")
+    props.setMarkerLocations(result)
   };
 
   const filterLocations = (searchText) => {
@@ -59,9 +60,20 @@ const Header = (props) => {
     return result;
   };
 
-  useEffect(() => {
-    filterLocations(props.searchText);
-  }, [props.searchText]);
+  const handleItemClick = (location) => {
+    props.setSearchText(location.title);
+    const result = props.allMarkerLocations.find(
+      (i) => location.title.toLowerCase() == i.title.toLowerCase()
+    );
+    props.setMarkerLocations([result]);
+    props.onSelectLocation(location);
+    onBlur();
+  };
+
+  const onChangeSearchText = (value) =>{
+    props.setSearchText(value);
+    filterLocations(value);
+  }
 
   useEffect(() => {
     setSearchResult(props.allMarkerLocations.slice(0, 4));
@@ -71,11 +83,7 @@ const Header = (props) => {
     return (
       <SearchItem
         {...item}
-        setSearchText={props.setSearchText}
-        onBlur={onBlur}
-        filterLocations={filterLocations}
-        onSelectLocation={props.onSelectLocation}
-        setMarkerLocations={props.setMarkerLocations}
+        handleItemClick={handleItemClick}
       />
     );
   };
@@ -97,7 +105,7 @@ const Header = (props) => {
             { color: theme.light ? "black" : "white" },
           ]}
           value={props.searchText}
-          onChangeText={props.setSearchText}
+          onChangeText={onChangeSearchText}
           placeholder="Search"
           onFocus={onFocus}
           placeholderTextColor={GREY_COLOR}
@@ -157,6 +165,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
+    maxHeight:300
   },
   searchItem: {
     paddingHorizontal: 15,
