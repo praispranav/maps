@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "maps",
-    "slug": "maps",
+    "name": "mapsios",
+    "slug": "mapsios",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.praispranav.mapsios"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "65ac9a09-446f-46ad-bf13-dcfcf5a78dd9"
+      }
     }
   }
 }
