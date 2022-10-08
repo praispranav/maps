@@ -35,6 +35,7 @@ export default function MapScreen() {
   const [allMarkerLocations, setAllMarkerLocations] = useState([]);
   const [markerLocations, setMarkerLocations] = useState([]);
   const [mapConfig, setMapConfig] = useState(INITIAL_MAP_CONFIG);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState(
     INITIAL_CURRENT_LOCATION
   );
@@ -67,7 +68,6 @@ export default function MapScreen() {
       longitudeDelta: 0.0111,
     });
     setSelectedLocation(locationDetail);
-    console.log("Location", locationDetail)
   };
 
   const clearSelectedLocation = () => {
@@ -96,11 +96,12 @@ export default function MapScreen() {
     setAllMarkerLocations(labelWithLocation);
     setLocationPermission(true);
     setMapConfig({
-      latitude: location.latitude,
-      longitude: location.longitude,
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
       latitudeDelta: 0.0202,
       longitudeDelta: 0.0111,
     });
+    setIsLoading(false)
   };
 
   useEffect(() => {
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 1,
     position: "absolute",
-    bottom: 0,
+    bottom: -19,
     height: 60,
     paddingVertical: 15,
     shadowColor: "#000",
