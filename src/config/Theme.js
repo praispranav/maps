@@ -7,10 +7,10 @@ const themeColors = {
         mapMarkerBorder: "black"
     },
     dark:{
-        backgroundColor: '#5c5858',
+        backgroundColor: '#242423',
         color: 'white',
         bottomNavigationBackground: 'black',
-        mapMarker: "#5c5858",
+        mapMarker: "#242423",
         mapMarkerBorder: "white",
     }
 }

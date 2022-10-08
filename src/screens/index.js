@@ -1,15 +1,15 @@
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
-import Map from "../components/Map";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import IconButton from "../components/IconButton";
-import { useDispatch } from "react-redux";
-import { changeTheme } from "../store/themeSlice";
-import ThemedView from "../components/themed/View";
 import LocationDetailCard from "../components/LocationDetailCard";
-import * as Location from "expo-location";
+import Map from "../components/Map";
+import ThemedView from "../components/themed/View";
 import mapLabels from "../data/sampleLocations";
+import { changeTheme } from "../store/themeSlice";
 
 const INITIAL_MAP_CONFIG = {
   latitude: 26.567392240889685,
@@ -167,17 +167,18 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
     bottom: 0,
-    height: 90,
+    height: 60,
     paddingVertical: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+    elevation: 10
   },
   header: {
     padding: 20,
     position: "absolute",
-    top: 30,
+    top: 0,
     zIndex: 1,
     width: "100%",
   },
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 20,
     position: "absolute",
-    bottom: 105,
+    bottom: 75,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,

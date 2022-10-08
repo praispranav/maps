@@ -123,7 +123,7 @@ const Header = (props) => {
       </ThemedView>
       {isFocused ? (
         <FlatList
-          style={styles.searchResult}
+          style={[styles.searchResult]}
           data={searchResult}
           renderItem={renderItem}
         />
@@ -137,13 +137,12 @@ const CONTAINER_WIDTH = Dimensions.get("screen").width - 40;
 const styles = StyleSheet.create({
   mainContainer: {
     width: CONTAINER_WIDTH,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.4,
-    shadowRadius: 2,
+    elevation: 10,
+    borderRadius: 10,
+    // backgroundColor: 'green'
   },
   searchContainer: {
+    // elevation: 10,
     height: 50,
     width: CONTAINER_WIDTH,
     display: "flex",
@@ -165,7 +164,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
-    maxHeight:300
+    maxHeight:200,
+    // backgroundColor: "red"
   },
   searchItem: {
     paddingHorizontal: 15,

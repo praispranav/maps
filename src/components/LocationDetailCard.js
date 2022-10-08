@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
   },
   heading:{
     fontFamily:"SpaceGrotesk-Bold",
-    fontSize: 24,
+    fontSize: 20,
     marginBottom: 5
   },
   description:{
-    fontSize: 17,
+    fontSize: 15,
     fontFamily:"SpaceGrotesk-Regular",
   },
   textContainer:{

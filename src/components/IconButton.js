@@ -16,6 +16,7 @@ export default function IconButton({ name, top, ...props }) {
 const styles = StyleSheet.create({
   iconButton: {
     position: "absolute",
+    elevation: 10,
     right: 20,
     width: 40,
     height: 40,
