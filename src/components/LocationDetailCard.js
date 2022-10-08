@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    position: "relative"
+    position: "relative",
+    elevation: 10
   },
   container: {
     width: "100%",

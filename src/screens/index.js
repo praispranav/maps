@@ -67,6 +67,7 @@ export default function MapScreen() {
       longitudeDelta: 0.0111,
     });
     setSelectedLocation(locationDetail);
+    console.log("Location", locationDetail)
   };
 
   const clearSelectedLocation = () => {

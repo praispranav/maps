@@ -5,16 +5,17 @@ import { useSelector } from "react-redux";
 import googleMapsConfig from "../config/googleMapsConfig";
 import mapDarkModeStyle from "../config/mapDarkMode";
 import themeColors from "../config/Theme";
+import CustomCallout from "./Callout";
 
 export default function Map(props) {
   const theme = useSelector((s) => s.theme);
   const markers = useRef(null);
 
-  useEffect(()=>{
-    if(props.markerLocations.length === 1 && markers){
+  useEffect(() => {
+    if (props.markerLocations.length === 1 && markers) {
       markers[0].showCallout();
     }
-  },[props.markerLocations])
+  }, [props.markerLocations]);
   return (
     <View>
       <MapView
@@ -22,8 +23,14 @@ export default function Map(props) {
         onRegionChange={props.onRegionChange}
         userInterfaceStyle={theme.light ? "light" : "dark"}
         style={styles.map}
-        customMapStyle={theme.light ? [...googleMapsConfig] : [...mapDarkModeStyle, ...googleMapsConfig]}
+        customMapStyle={
+          theme.light
+            ? [...googleMapsConfig]
+            : [...mapDarkModeStyle, ...googleMapsConfig]
+        }
       >
+
+
         {props.locationPermission ? (
           <Circle
             center={{
@@ -42,7 +49,7 @@ export default function Map(props) {
           ? props.markerLocations.map((locationDetail, index) => (
               <Marker
                 title={locationDetail.title}
-                ref={(ref) => markers[index] = ref}
+                ref={(ref) => (markers[index] = ref)}
                 image={
                   props.selectedLocation &&
                   props.selectedLocation.title === locationDetail.title
@@ -53,12 +60,17 @@ export default function Map(props) {
                 zIndex={3}
                 style={{ height: 10, width: 10 }}
                 onSelect={() => props.onSelectLocation(locationDetail)}
+                onPress={() => props.onSelectLocation(locationDetail)}
                 coordinate={{
                   latitude: locationDetail.latitude,
                   longitude: locationDetail.longitude,
                 }}
-                
               >
+                <MapView.Callout tooltip style={styles.callout}>
+                <CustomCallout title={locationDetail.title}
+                  />
+                              </MapView.Callout>
+      
               </Marker>
             ))
           : undefined}
@@ -96,5 +108,18 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  callout:{
+    borderRadius: 10,
+  },
+  bubble: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 10,
+    width: 100,
+    display: `flex`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    margin: 0,
   },
 });
