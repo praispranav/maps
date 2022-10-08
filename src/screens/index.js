@@ -84,8 +84,7 @@ export default function MapScreen() {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({});
-    console.log(location);
+    const location = await Location.getCurrentPositionAsync({});
     setCurrentLocation(location);
     const labelWithLocation = mapLabels.map((locationDetail, index) => {
       locationDetail.latitude = location.coords.latitude + locationDetail.add;
@@ -95,6 +94,13 @@ export default function MapScreen() {
     setMarkerLocations(labelWithLocation);
     setAllMarkerLocations(labelWithLocation);
     setLocationPermission(true);
+    setMapConfig({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.0202,
+      longitudeDelta: 0.0111,
+    });
+
   };
 
   useEffect(() => {
