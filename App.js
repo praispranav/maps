@@ -21,16 +21,6 @@ function Router() {
           <Stack.Screen name="Home" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-      <View
-        style={[ styles.bottomBar,
-          {
-            backgroundColor:
-              themeColors[theme.light ? "light" : "dark"][
-                "bottomNavigationBackground"
-              ],
-          },
-        ]}
-      />
     </SafeAreaView>
   );
 }
@@ -55,7 +45,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     bottom: 0,
-    height: 30,
+    height: 15,
     width: "100%"
   }
 })

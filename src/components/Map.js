@@ -29,8 +29,6 @@ export default function Map(props) {
             : [...mapDarkModeStyle, ...googleMapsConfig]
         }
       >
-
-
         {props.locationPermission ? (
           <Circle
             center={{
@@ -67,10 +65,8 @@ export default function Map(props) {
                 }}
               >
                 <MapView.Callout tooltip style={styles.callout}>
-                <CustomCallout title={locationDetail.title}
-                  />
-                              </MapView.Callout>
-      
+                  <CustomCallout title={locationDetail.title} />
+                </MapView.Callout>
               </Marker>
             ))
           : undefined}
@@ -109,11 +105,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  callout:{
+  callout: {
     borderRadius: 10,
   },
   bubble: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
     width: 100,
