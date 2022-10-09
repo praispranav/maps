@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions,Image } from "react-native";
 import MapView, { Circle, Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
 import themeColors from "../config/Theme";
@@ -40,12 +40,6 @@ export default function Map(props) {
               <Marker
                 title={locationDetail.title}
                 ref={(ref) => markers[index] = ref}
-                image={
-                  props.selectedLocation &&
-                  props.selectedLocation.title === locationDetail.title
-                    ? locationDetail.imageSmall
-                    : locationDetail.imageLarge
-                }
                 key={locationDetail.title + "Marker"}
                 zIndex={3}
                 style={{ height: 10, width: 10 }}
@@ -54,15 +48,21 @@ export default function Map(props) {
                   latitude: locationDetail.latitude,
                   longitude: locationDetail.longitude,
                 }}
-              />
+                shouldRasterizeIOS={true}
+              >
+                <Image source={  props.selectedLocation &&
+                  props.selectedLocation.title === locationDetail.title
+                    ? locationDetail.imageSmall
+                    : locationDetail.imageLarge} style={{ height: 20, width: 20 , resizeMode: "contain" }} />
+              </Marker>
             ))
           : undefined}
         {props.locationPermission
           ? props.markerLocations.map((locationDetail) => (
               <Circle
                 center={{
-                  latitude: locationDetail.latitude,
-                  longitude: locationDetail.longitude,
+                  latitude: locationDetail.latitude - 0.0001,
+                  longitude: locationDetail.longitude + 0.0001,
                 }}
                 radius={
                   props.selectedLocation &&
